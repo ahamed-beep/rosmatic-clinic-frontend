@@ -37,13 +37,13 @@ export default function HeroSection() {
     >
       {/* Desktop image */}
       <img
-        src="/Images/home/hero/hero.jpg"
+        src="/images/home/hero/hero.jpg"
         alt="Rosmatic model"
         className="absolute inset-y-0 right-0 hidden h-full w-[75%] object-cover object-[70%_center] md:block"
       />
       {/* Mobile image */}
       <img
-        src="/Images/home/hero/heromob.png"
+        src="/images/home/hero/heromob.png"
         alt="Rosmatic model"
         className="absolute inset-0 h-full w-full object-cover object-top md:hidden"
       />
