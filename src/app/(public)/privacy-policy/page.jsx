@@ -132,9 +132,7 @@ export default function PrivacyPolicyPage() {
       {/* Footer */}
       <footer className="border-t border-neutral-200 bg-neutral-50">
         <div className="mx-auto flex max-w-[1100px] flex-wrap items-center justify-between gap-3 px-6 py-6 text-sm text-neutral-500">
-          <span>
-            © {new Date().getFullYear()} Rosmatic Skin Clinic. All rights reserved.
-          </span>
+          <span>© 2026 Rosmatic Skin Clinic. All rights reserved.</span>
           <div className="flex flex-wrap gap-5">
             {navLinks.map((item) => (
               <Link
