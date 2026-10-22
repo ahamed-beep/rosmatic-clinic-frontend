@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import ChatWidget from "@/components/layout/ChatWidget";
+import SmoothHashScroll from "@/components/layout/SmoothHashScroll";
 
 const cormorant = localFont({
   src: "../../public/fonts/CormorantGaramond-Regular.ttf",
@@ -26,9 +28,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${cormorant.variable} ${manrope.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+            <body className="min-h-full flex flex-col">
+        <SmoothHashScroll />
+        {children}
+        <ChatWidget />
+      </body>
     </html>
   );
 }

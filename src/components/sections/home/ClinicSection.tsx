@@ -35,7 +35,7 @@ const sans = { fontFamily: "var(--font-manrope), sans-serif" };
             </p>
             <a
             style={sans}
-              href="#"
+              href="/contact#contact-form"
               className="mt-6 inline-flex items-center gap-6 border border-[#DCE4F1] px-6 py-4 text-[13px]  text-[#173FA9] font-semibold transition-colors hover:bg-slate-50 md:mt-5 md:px-5 md:py-3 md:text-[12px]"
             >
               Plan your visit
