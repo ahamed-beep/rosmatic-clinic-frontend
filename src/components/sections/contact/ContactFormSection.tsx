@@ -98,6 +98,49 @@ const inputClass =
 
 export default function ContactFormSection() {
   const [treatment, setTreatment] = useState("");
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+
+    if (!fd.get("agree")) {
+      setErrorMsg("Please agree to be contacted.");
+      setStatus("error");
+      return;
+    }
+
+    setStatus("sending");
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/send-contact`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+          },
+          body: JSON.stringify({
+            fullName: fd.get("fullName"),
+            email: fd.get("email"),
+            phone: fd.get("phone"),
+            treatment: fd.get("treatment"),
+            message: fd.get("message"),
+          }),
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to send");
+      form.reset();
+      setTreatment("");
+      setStatus("success");
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : "Failed to send");
+      setStatus("error");
+    }
+  }
 
   return (
     <div
@@ -216,7 +259,7 @@ export default function ContactFormSection() {
 
               <form
                 className="mt-7"
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={handleSubmit}
                 noValidate
               >
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -326,11 +369,23 @@ export default function ContactFormSection() {
 
                 <button
                   type="submit"
-                  className="mt-6 inline-flex h-11 w-full items-center justify-center gap-2.5 rounded-[4px] bg-[#173FA9] border border-[#FFFFFF00] px-7 text-[13px] font-medium text-white transition-colors hover:bg-[#14368F] focus:outline-none focus:ring-2 focus:ring-[#173FA9]/30 sm:w-auto"
+                  disabled={status === "sending"}
+                  className="mt-6 inline-flex h-11 w-full items-center justify-center gap-2.5 rounded-[4px] bg-[#173FA9] border border-[#FFFFFF00] px-7 text-[13px] font-medium text-white transition-colors hover:bg-[#14368F] focus:outline-none focus:ring-2 focus:ring-[#173FA9]/30 disabled:opacity-60 sm:w-auto"
                 >
-                  Send your message
+                  {status === "sending" ? "Sending..." : "Send your message"}
                   <SendIcon />
                 </button>
+
+                {status === "success" && (
+                  <p style={sans} className="mt-4 text-[12px] text-green-700">
+                    Thank you! Your message has been sent. We'll get back to you soon.
+                  </p>
+                )}
+                {status === "error" && (
+                  <p style={sans} className="mt-4 text-[12px] text-red-600">
+                    {errorMsg}
+                  </p>
+                )}
               </form>
 
               <p style={sans} className="mt-8 text-[10px] leading-[1.7] text-[#61718C]">
