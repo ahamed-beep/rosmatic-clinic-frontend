@@ -1,4 +1,4 @@
-const explore = ["Home", "Treatments", "Our clinic", "Our doctors", "Contact"];
+const explore = ["Home", "Treatments", "Our clinic", "Privacy Policy", "Contact"];
 const care = ["Skin health", "Botox & Fillers", "Laser treatments", "Anti-aging"];
 
 export default function FooterSection() {
